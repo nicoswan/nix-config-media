@@ -104,10 +104,9 @@
       local    all      all                    trust
       # ipv4
       host     all      all     127.0.0.1/32   trust
-      host     all      all     0.0.0.0/0      md5
+      host     all      all     192.168.1.0/24 md5
       # ipv6
       host     all      all     ::1/128        trust
-      host     all      all     ::1/0          md5
     '';
     identMap = ''
       # ArbitraryMapName systemUser DBUser
