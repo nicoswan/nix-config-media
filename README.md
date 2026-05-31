@@ -67,6 +67,14 @@ The server exports storage pools to local subnets (`192.168.1.0/24`) and allowed
 │       ├── home-manager.nix    # Host Home Manager configuration
 │       ├── sops.nix            # SOPS-nix configuration
 │       ├── system/             # Networking, Disko, NFS server, and hardware configs
+│       │   ├── default.nix            # Imports active system configurations
+│       │   ├── boot-loader.nix        # GRUB bootloader configuration
+│       │   ├── disks.nix              # Disko partition tables & mounts
+│       │   ├── hardware-configuration.nix # Hardware scan / kernel modules
+│       │   ├── networking.nix         # Network settings & hostname
+│       │   ├── nfs-server.nix         # NFS shares setup
+│       │   ├── nix-settings.nix       # Nix package manager tuning
+│       │   └── usb-optimizations.nix  # SD card/USB write-reduction settings
 │       ├── services/           # Media application suites & server services
 │       │   ├── default.nix            # Imports active services
 │       │   ├── fail2ban.nix           # Security & intrusion prevention

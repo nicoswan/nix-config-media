@@ -4,6 +4,9 @@
     ./disks.nix
     ./networking.nix
     ./nfs-server.nix
+    ./boot-loader.nix
+    ./nix-settings.nix
+    ./usb-optimizations.nix
   ];
 
   # Enable the OpenSSH daemon.
