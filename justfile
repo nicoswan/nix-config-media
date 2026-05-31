@@ -95,5 +95,5 @@ disko-install HOST DISK:
   sudo nix run .#disko-install -- \
     --flake .#{{HOST}} --disk main {{DISK}}
 
-disko-install-media: 
+install-mmcblk0: 
   just disko-install media /dev/mmcblk0
