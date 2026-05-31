@@ -7,4 +7,5 @@
     efiInstallAsRemovable = true;
   };
   boot.loader.efi.canTouchEfiVariables = false;
+  boot.consoleLogLevel = 3;
 }

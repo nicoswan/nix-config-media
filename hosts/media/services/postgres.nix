@@ -8,7 +8,7 @@
   fileSystems."/var/lib/postgresql/18" = {
     device = "/mnt/ntfs_drive/home-lab/data/postgres/postgres-data.img";
     fsType = "ext4";
-    options = [ "loop" "noatime" ];
+    options = [ "loop" "noatime" "nodiscard" ];
   };
 
   systemd.services.create-postgres-loopback = {
