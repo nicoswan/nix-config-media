@@ -1,4 +1,5 @@
-{ pkgs, nixpkgs-unstable, inputs, ... }: {
+{ pkgs, ... }:
+{
   programs.tmux = {
     enable = true;
     clock24 = false;
@@ -8,7 +9,9 @@
     baseIndex = 1;
     mouse = true;
 
-    tmuxinator = { enable = true; };
+    tmuxinator = {
+      enable = true;
+    };
 
     plugins = with pkgs; [
       tmuxPlugins.prefix-highlight

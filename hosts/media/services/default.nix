@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   imports = [
     ./fail2ban.nix
 
@@ -14,10 +15,14 @@
     # Server services
     #./traefik.nix
     #./arion.nix
+    ./portal.nix
+    ./postgres.nix
 
     ./nginx-proxy.nix
 
   ];
+
+  services.portal-relay.enable = true;
 
   users.groups.media.gid = 1001;
   users.users.media = {

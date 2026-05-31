@@ -32,11 +32,6 @@
       url = "github:AdisonCavani/distro-grub-themes";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    git-project-updater = {
-      url = "github:/nico-swan-com/git-project-updater";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -70,26 +65,33 @@
       # Import custom overlays
       overlays = import ./overlays { inherit inputs; };
 
-    in {
+    in
+    {
       inherit overlays;
 
-      packages = forAllSystems (system:
+      packages = forAllSystems (
+        system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
           customPkgs = import ./packages/default.nix { inherit pkgs; };
         in
-        customPkgs // {
+        customPkgs
+        // {
           disko-install = inputs.disko.packages.${system}.disko-install;
-        });
+        }
+      );
 
       # Nix formatter available through 'nix fmt'
-      formatter =
-        forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixpkgs-fmt);
 
       # Shell configured with packages that are typically only needed when working on or with nix-config.
-      devShells = forAllSystems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./shell.nix { inherit pkgs; });
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        import ./shell.nix { inherit pkgs; }
+      );
 
       nixosConfigurations = {
         media = nixpkgs.lib.nixosSystem {
@@ -112,10 +114,9 @@
               nixpkgs.config.allowUnfree = true;
               nix.settings = {
                 experimental-features = "nix-command flakes";
-                trusted-users = [ "root" cfg.username ];
-                trusted-substituters = [ "https://devenv.cachix.org" ];
-                trusted-public-keys = [
-                  "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+                trusted-users = [
+                  "root"
+                  cfg.username
                 ];
               };
             }

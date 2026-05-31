@@ -9,12 +9,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    settings.PasswordAuthentication = true;
+    settings.PasswordAuthentication = false;
     settings.PermitRootLogin = "no";
   };
-
-  # Required for remote vscode
-  # https://nixos.wiki/wiki/Visual_Studio_Code
-  programs.nix-ld.enable = true;
-
 }

@@ -5,7 +5,7 @@
   ];
 
   # Pinned to initial install version — do not bump without understanding migration implications
-  system.stateVersion = "24.11";
+  system.stateVersion = "26.05";
 
   programs = {
     zsh = {

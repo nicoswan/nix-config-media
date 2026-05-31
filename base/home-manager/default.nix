@@ -3,8 +3,6 @@
   # Pinned to initial install version — do not bump without understanding migration implications
   home.stateVersion = "26.05";
 
-  fonts.fontconfig.enable = true;
-
   programs = {
     home-manager.enable = true;
 

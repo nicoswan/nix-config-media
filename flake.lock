@@ -1,36 +1,5 @@
 {
   "nodes": {
-    "advisory-db": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1746606729,
-        "narHash": "sha256-4fm80C1Zeg2z67wfR4qGrwS0Eevm1FVSg8yZizYPOUM=",
-        "owner": "rustsec",
-        "repo": "advisory-db",
-        "rev": "c5421337865bb6eae6d67811bbb7f5257a5f3faa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rustsec",
-        "repo": "advisory-db",
-        "type": "github"
-      }
-    },
-    "crane": {
-      "locked": {
-        "lastModified": 1746291859,
-        "narHash": "sha256-DdWJLA+D5tcmrRSg5Y7tp/qWaD05ATI4Z7h22gd1h7Q=",
-        "owner": "ipetkov",
-        "repo": "crane",
-        "rev": "dfd9a8dfd09db9aad544c4d3b6c47b12562544a5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ipetkov",
-        "repo": "crane",
-        "type": "github"
-      }
-    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -87,47 +56,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "flake-utils_2": {
-      "inputs": {
-        "systems": "systems_2"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "git-project-updater": {
-      "inputs": {
-        "advisory-db": "advisory-db",
-        "crane": "crane",
-        "flake-utils": "flake-utils_2",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1746879695,
-        "narHash": "sha256-14hKR8ySlxdqM4xkKF1reVl9T6+jA0RAKWlA5/O8ogE=",
-        "owner": "nico-swan-com",
-        "repo": "git-project-updater",
-        "rev": "a3457078d09a93251420ece04593172968bf8f88",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nico-swan-com",
-        "repo": "git-project-updater",
         "type": "github"
       }
     },
@@ -222,7 +150,6 @@
       "inputs": {
         "disko": "disko",
         "distro-grub-themes": "distro-grub-themes",
-        "git-project-updater": "git-project-updater",
         "home-manager": "home-manager",
         "nix-secrets": "nix-secrets",
         "nixpkgs": "nixpkgs",
@@ -249,21 +176,6 @@
       }
     },
     "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
