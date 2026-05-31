@@ -4,6 +4,15 @@ with lib;
 
 let
   cfg = config.services.portal-relay;
+  portal-fixed = pkgs.portal.overrideAttrs (oldAttrs: {
+    # Nixpkgs Go builder accepts ldflags as a list of strings.
+    # We set main.version with the 'v' prefix to satisfy SemVer validation.
+    ldflags = [
+      "-s"
+      "-w"
+      "-X main.version=v1.2.3"
+    ];
+  });
 in
 {
   options.services.portal-relay = {
@@ -28,13 +37,16 @@ in
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
 
+      path = [ pkgs.glibc.bin ];
+
       serviceConfig = {
-        ExecStart = "${pkgs.portal}/bin/portal serve --port ${toString cfg.port}";
+        ExecStart = "${portal-fixed}/bin/portal serve --port ${toString cfg.port}";
         Restart = "always";
         RestartSec = 5;
         DynamicUser = true;
         PrivateTmp = true;
         ProtectHome = true;
+        Environment = [ "HOME=/tmp" ];
       };
     };
 

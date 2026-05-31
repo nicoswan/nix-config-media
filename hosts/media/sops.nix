@@ -12,6 +12,7 @@ in {
     validateSopsFiles = false;
 
     age.keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
+    age.sshKeyPaths = [ ];
 
     secrets = {
       "users/root/password".neededForUsers = true;
