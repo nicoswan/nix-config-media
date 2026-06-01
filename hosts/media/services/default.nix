@@ -19,6 +19,7 @@
     ./postgres.nix
 
     ./nginx-proxy.nix
+    ./podman.nix
 
   ];
 
