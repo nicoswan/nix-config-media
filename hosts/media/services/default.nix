@@ -20,7 +20,9 @@
 
     ./nginx-proxy.nix
     ./podman.nix
-
+    ./cygnus-monitor-probe.nix
+    ./qdrant.nix
+    ./rcw-crawler.nix
   ];
 
   services.portal-relay.enable = true;

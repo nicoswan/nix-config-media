@@ -32,6 +32,16 @@
       url = "github:AdisonCavani/distro-grub-themes";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    rcw-crawler = {
+      url = "git+ssh://git@gitlab.com/cygnus-labs/development/ai/cygnus-law/rcw-crawler.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    cygnus-monitor-probe = {
+      url = "git+ssh://git@gitlab.com/cygnus-labs/development/platform/cygnus-monitor-probe.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -95,9 +105,9 @@
 
       nixosConfigurations = {
         media = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
           inherit specialArgs;
           modules = [
+            { nixpkgs.hostPlatform = "x86_64-linux"; }
             # Apply our overlays globally
             {
               nixpkgs.overlays = [
