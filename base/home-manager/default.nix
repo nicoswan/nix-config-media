@@ -47,10 +47,12 @@
         os.editPreset = "nvim";
         git = {
           useConfig = true;
-          paging = {
-            pager =
-              "${pkgs.delta}/bin/delta  --line-numbers --dark --paging=never --syntax-theme=Dracula";
-          };
+          pagers = [
+            {
+              pager =
+                "${pkgs.delta}/bin/delta  --line-numbers --dark --paging=never --syntax-theme=Dracula";
+            }
+          ];
           externalDiffCommand =
             "${pkgs.delta}/bin/delta  --line-numbers --dark --paging=never --syntax-theme=Dracula";
         };
