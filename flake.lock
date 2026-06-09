@@ -174,11 +174,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1780941845,
-        "narHash": "sha256-gFGdZmXW2KwN0ZHN0fTy/wzadf08IVXIZYbblRUABXY=",
+        "lastModified": 1781006726,
+        "narHash": "sha256-nC1dXx8cw4ieIxoRvSnb7uQqpq2LwdGRUJeMUmAcVO0=",
         "ref": "refs/heads/main",
-        "rev": "dcca4bb03e319e0dd8366b8a9f07ef2edb81c5a9",
-        "revCount": 15,
+        "rev": "b5ff66df853c1c34012782eda9010d4c84e102dd",
+        "revCount": 16,
         "type": "git",
         "url": "ssh://git@gitlab.com/cygnus-labs/development/ai/cygnus-law/rcw-crawler.git"
       },
