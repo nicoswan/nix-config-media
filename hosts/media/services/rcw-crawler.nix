@@ -19,12 +19,12 @@
     # Memory and Threading Optimization
     onnxIntraThreads = 2; # Limit internal CPU threads for ONNX Runtime to reduce memory overhead
     # rerankEnabled = false; # Set to false if you want to completely disable cross-encoder reranking (saves ~1.2GB)
-    # rerankModel = "jinaai/jina-reranker-v1-turbo-en"; # Lighter/faster reranker model (~270MB vs BGE's ~1.1GB) default "BAAI/bge-reranker-base"
+    rerankModel = "jinaai/jina-reranker-v1-turbo-en"; # ~270MB vs BGE's ~1.1GB — ~4% accuracy tradeoff for ~850MB memory savings
+    embeddingModel = "BAAI/bge-small-en-v1.5"; # +26% better retrieval vs MiniLM, same 384 dims, supports query:/passage: prefixes
 
     # qdrantCollection  = "legal_collection"; # Qdrant collection name.
     # crawlCronSchedule = "0 0 1 * * *"; # Cron expression for crawl scheduling.
     # embeddingStrategy = "fastembed"; # Embedding strategy (fastembed for local CPU, qdrant_cloud for server-side inference).
-    # embeddingModel = "sentence-transformers/all-minilm-l6-v2"; # HuggingFace model identifier for embeddings.
     # rerankCandidateLimit = 15; # Candidate limit for reranking.
     # logLevel = "info"; # RUST_LOG environment variable level.
 
