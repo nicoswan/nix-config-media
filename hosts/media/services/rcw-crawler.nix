@@ -17,7 +17,7 @@
     targetChapters = "61.10,61.12,61.16,61.24,61.30,61.34,61.38,61.40,19.86,64.38,64.90,64.34,19.16,6.15";
 
     # Memory and Threading Optimization
-    onnxIntraThreads = 2; # Limit internal CPU threads for ONNX Runtime to reduce memory overhead
+    # onnxIntraThreads = 2; # Limit internal CPU threads for ONNX Runtime to reduce memory overhead
     # rerankEnabled = false; # Set to false if you want to completely disable cross-encoder reranking (saves ~1.2GB)
     rerankModel = "jinaai/jina-reranker-v1-turbo-en"; # ~270MB vs BGE's ~1.1GB — ~4% accuracy tradeoff for ~850MB memory savings
     embeddingModel = "BAAI/bge-small-en-v1.5"; # +26% better retrieval vs MiniLM, same 384 dims, supports query:/passage: prefixes
