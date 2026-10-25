@@ -34,8 +34,7 @@
     };
 
     rcw-crawler = {
-      url = "git+ssh://git@gitlab.com/cygnus-labs/development/ai/cygnus-law/rcw-crawler.git";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "git+ssh://git@gitlab.com/cygnus-labs/development/ai/cygnus-law/rcw-crawler.git?ref=main";
     };
 
     cygnus-monitor-probe = {
@@ -127,6 +126,14 @@
                 trusted-users = [
                   "root"
                   cfg.username
+                ];
+                substituters = [
+                  "https://cache.nixos.org"
+                  "https://law.cachix.org"
+                ];
+                trusted-public-keys = [
+                  "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+                  "law.cachix.org-1:ooSOR+DxWjRJehE4+q/j8rYecitsUolCYtXU/lKV/rA="
                 ];
               };
             }

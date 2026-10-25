@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780866210,
-        "narHash": "sha256-pOYGrQzpihK1hpfJ+V3t88pqdz1+LnxgHW+LySt7sXM=",
+        "lastModified": 1784291278,
+        "narHash": "sha256-TejEs412Dmd5g8jj7IaW36nqXptmoOo1jvWxrXJMzo0=",
         "ref": "refs/heads/main",
-        "rev": "a056475ac4245e5af287bd4f02a0513974432268",
-        "revCount": 3,
+        "rev": "83a3d444181cea8b4e43dab0f90a946a29f5897b",
+        "revCount": 4,
         "type": "git",
         "url": "ssh://git@gitlab.com/cygnus-labs/development/platform/cygnus-monitor-probe.git"
       },
@@ -27,11 +27,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780894562,
-        "narHash": "sha256-c3430xwxwhHipl3jigUGMMBfpaMylDqytW/kdmB3ZGs=",
+        "lastModified": 1781152676,
+        "narHash": "sha256-RxWs5ND31KzTG7wvMM+PMfUjyNpmIEr999lqNARaM5o=",
         "ref": "refs/heads/master",
-        "rev": "24fed06cac83bcc44ac8efbb57cab1a82fa0bedc",
-        "revCount": 1390,
+        "rev": "ff8702b4de27f72b4c78573dfb89ec74e36abdf1",
+        "revCount": 1392,
         "type": "git",
         "url": "https://github.com/nix-community/disko.git"
       },
@@ -86,11 +86,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780883961,
-        "narHash": "sha256-WU6SUrESuPiEXEUvX4D51AgWrXRJty+sLJBwBaDBGqE=",
+        "lastModified": 1789267039,
+        "narHash": "sha256-LWiBv9yAYFi2LPbUhDGHPGKYskJQjj2fw12OlyO1uQo=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "4eb4fec41674d5b059aa2eedf0f98453890546fa",
+        "rev": "ec172013fa62135f58fb58dd17ae9651e8f39727",
         "type": "github"
       },
       "original": {
@@ -120,11 +120,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1780902259,
-        "narHash": "sha256-q8yYEC5f1mFlQO9RGna4LTc9QrcvWunX6FYp83munkQ=",
+        "lastModified": 1789542786,
+        "narHash": "sha256-ajQuqcxnj6RYnwCjA/9FTCnrdR2+BDzstE8UembXf60=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "bd0ff2d3eac24699c3664d5966b9ef36f388e2ca",
+        "rev": "4c7870105e7f1fdf9c48688c8d7efc21abf0688a",
         "type": "github"
       },
       "original": {
@@ -136,11 +136,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1780749050,
-        "narHash": "sha256-3av0pIjlOWQ6rDbNOmpUSvbNnJkGORQKKjb4LtCZsIY=",
+        "lastModified": 1789546076,
+        "narHash": "sha256-zVxLZiSnmaaPLwnhj7pwmqe3axBg/C6nG5JZsJMh2g4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "a799d3e3886da994fa307f817a6bc705ae538eeb",
+        "rev": "b1b875982b17dabde9b4a37f3e229e74913e6db3",
         "type": "github"
       },
       "original": {
@@ -152,11 +152,23 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1775888245,
-        "narHash": "sha256-nwASzrRDD1JBEu/o8ekKYEXm/oJW6EMCzCRdrwcLe90=",
+        "lastModified": 1784120854,
+        "narHash": "sha256-KesHgItiZPgGX740axSiQLcIQ8D24MDqNpkKYWIek8k=",
+        "type": "tarball",
+        "url": "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1782175435,
+        "narHash": "sha256-EMzXKmnOtBQ2MnvpiNOm7E+kOMvdPrIKaeg52Tip2Uk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "13043924aaa7375ce482ebe2494338e058282925",
+        "rev": "89570f24e97e614aa34aa9ab1c927b6578a43775",
         "type": "github"
       },
       "original": {
@@ -168,21 +180,20 @@
     },
     "rcw-crawler": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_2",
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1781009255,
-        "narHash": "sha256-xL3af/NtKAy+I35qQU/yTILLKl36SVbl9/qDWDVSW/E=",
-        "ref": "refs/heads/main",
-        "rev": "7146b26f61b6fecea958d15cdc574573bb593fa1",
-        "revCount": 18,
+        "lastModified": 1784303082,
+        "narHash": "sha256-MEr/b474uC4n6MZ5wOa8vRXn/8yWg7FcaJgo5ozDeQM=",
+        "ref": "main",
+        "rev": "5129d656da7510a391747b99e7ee949096913c3a",
+        "revCount": 29,
         "type": "git",
         "url": "ssh://git@gitlab.com/cygnus-labs/development/ai/cygnus-law/rcw-crawler.git"
       },
       "original": {
+        "ref": "main",
         "type": "git",
         "url": "ssh://git@gitlab.com/cygnus-labs/development/ai/cygnus-law/rcw-crawler.git"
       }
@@ -208,8 +219,8 @@
         ]
       },
       "locked": {
-        "lastModified": 1780802404,
-        "narHash": "sha256-bGtIUeLb0yChX4h6hB40OOCwcYhcpQZHXSDvZGdWgeM=",
+        "lastModified": 1784265529,
+        "narHash": "sha256-ohQQiPOngux8ofsrSlloHCMDhRMvocXqJiG8uH45Q5k=",
         "type": "tarball",
         "url": "https://github.com/oxalica/rust-overlay/archive/master.tar.gz"
       },
@@ -220,14 +231,14 @@
     },
     "sops-nix": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1780547341,
-        "narHash": "sha256-Gq8KNx5A7hBB3uGJaj6eQfLDIz5YdLu92gqBcvHvoUo=",
+        "lastModified": 1789623319,
+        "narHash": "sha256-kmlp8rPrvrXn58YiaANHKSWUijtUc7pwgerIywosOIM=",
         "owner": "mic92",
         "repo": "sops-nix",
-        "rev": "9ed65852b6257fbeae4355bc24ecfea307ca759a",
+        "rev": "16954c1c360c3dc4d4b3b3e64df59f7e89452cb1",
         "type": "github"
       },
       "original": {
