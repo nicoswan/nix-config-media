@@ -103,19 +103,17 @@
     "nix-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1777477137,
-        "narHash": "sha256-+oJxUi7s16+iBB9icmg5kAFUEvUpJZASq3z8cVl97rI=",
-        "ref": "main",
-        "rev": "5f523a04fd2c4915a2facece1ea80576f07fce48",
-        "shallow": true,
+        "lastModified": 1792954607,
+        "narHash": "sha256-EMM/LlKNkV+qmNq7GQJ85rQr1PPskUPU9ed9999Tds8=",
+        "ref": "refs/heads/main",
+        "rev": "20ee2f096c6e4790cd5540f144157ecbcf31aad3",
+        "revCount": 1,
         "type": "git",
-        "url": "ssh://git@github.com/nico-swan-com/nix-secrets.git"
+        "url": "file:///home/nicoswan/development/personal/home-lab/nix-secrets"
       },
       "original": {
-        "ref": "main",
-        "shallow": true,
         "type": "git",
-        "url": "ssh://git@github.com/nico-swan-com/nix-secrets.git"
+        "url": "file:///home/nicoswan/development/personal/home-lab/nix-secrets"
       }
     },
     "nixpkgs": {
@@ -220,7 +218,7 @@
       },
       "locked": {
         "lastModified": 1784265529,
-        "narHash": "sha256-ohQQiPOngux8ofsrSlloHCMDhRMvocXqJiG8uH45Q5k=",
+        "narHash": "sha256-wjoZGhxH/Yr+OsFRpNyV9DpMGQIdNEjjAOinfzQvadk=",
         "type": "tarball",
         "url": "https://github.com/oxalica/rust-overlay/archive/master.tar.gz"
       },

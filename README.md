@@ -58,7 +58,7 @@ The server exports storage pools to local subnets (`192.168.1.0/24`) and allowed
 ## Repository Structure
 
 ```
-├── base/
+├── core/
 │   ├── home-manager/   # Shared user configurations (git, terminals, tmux)
 │   └── nixos/          # Shared system configurations (system packages, users)
 ├── hosts/

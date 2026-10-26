@@ -2,9 +2,10 @@
 { pkgs, inputs, config, cfg, ... }:
 let
   secretsDirectory = builtins.toString inputs.nix-secrets;
-  secretsFile = "${secretsDirectory}/secrets.yaml";
+  secretsFile = "${secretsDirectory}/hosts/media.yaml";
   homeDirectory = "/home/${cfg.username}";
-in {
+in
+{
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
   sops = {
@@ -23,12 +24,14 @@ in {
   # The containing folders are created as root and if this is the first ~/.config/ entry,
   # the ownership is busted and home-manager can't target because it can't write into .config...
   # FIXME: We might not need this depending on how https://github.com/Mic92/sops-nix/issues/381 is fixed
-  system.activationScripts.sopsSetAgeKeyOwnwership = let
-    ageFolder = "${homeDirectory}/.config/sops/age";
-    user = config.users.users.${cfg.username}.name;
-    group = config.users.users.${cfg.username}.group;
-  in ''
-    mkdir -p ${ageFolder} || true
-    chown -R ${user}:${group} ${homeDirectory}/.config
-  '';
+  system.activationScripts.sopsSetAgeKeyOwnwership =
+    let
+      ageFolder = "${homeDirectory}/.config/sops/age";
+      user = config.users.users.${cfg.username}.name;
+      group = config.users.users.${cfg.username}.group;
+    in
+    ''
+      mkdir -p ${ageFolder} || true
+      chown -R ${user}:${group} ${homeDirectory}/.config
+    '';
 }

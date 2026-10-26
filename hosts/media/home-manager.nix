@@ -1,7 +1,7 @@
 { cfg, ... }: {
   imports = [
-    ../../base/home-manager
+    ../../core/home-manager
     ./users/${cfg.username}/home-manager.nix
-    ../../base/home-manager/terminals/tmux.nix
+    ../../core/home-manager/terminals/tmux.nix
   ];
 }

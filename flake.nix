@@ -1,11 +1,10 @@
 {
-  description = "NixOS configuration for media server";
+  description = "Personal home-lab NixOS infrastructure";
 
   inputs = {
-
     # NixOS
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # also see 'unstable-packages' overlay at 'overlays/default.nix"
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # User packages
     home-manager = {
@@ -13,18 +12,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Secrets management
-    sops-nix.url = "github:mic92/sops-nix";
-
     # Declarative partitioning and formatting
     disko = {
       url = "git+https://github.com/nix-community/disko.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Secrets management
+    sops-nix.url = "github:mic92/sops-nix";
+
     # Secrets
     nix-secrets = {
-      url = "git+ssh://git@github.com/nico-swan-com/nix-secrets.git?ref=main&shallow=1";
+      url = "git+file:///home/nicoswan/development/personal/home-lab/nix-secrets";
       flake = false;
     };
 
@@ -44,11 +43,14 @@
   };
 
   outputs =
-    {
-      nixpkgs,
-      ...
+    { self
+    , nixpkgs
+    , nixpkgs-unstable
+    , home-manager
+    , ...
     }@inputs:
     let
+      inherit (self) outputs;
       inherit (nixpkgs) lib;
 
       # Systems that can run tests:
@@ -57,9 +59,19 @@
       # Function to generate a set based on supported systems:
       forAllSystems = inputs.nixpkgs.lib.genAttrs supportedSystems;
 
-      # Media Server inline configuration arguments
-      cfg = {
-        hostname = "media";
+      mkSystem = import ./lib/mkSystem.nix {
+        inherit
+          nixpkgs
+          nixpkgs-unstable
+          outputs
+          inputs
+          lib
+          home-manager
+          ;
+      };
+
+      # Common Configuration
+      commonConfig = {
         username = "nicoswan";
         fullname = "Nico Swan";
         email = "hi@nicoswan.com";
@@ -67,17 +79,15 @@
         timezone = "Africa/Johannesburg";
       };
 
-      specialArgs = {
-        inherit inputs cfg;
+      x86_64-config = lib.recursiveUpdate commonConfig {
+        system = "x86_64-linux";
+        extraModules = [
+          inputs.distro-grub-themes.nixosModules.x86_64-linux.default
+        ];
       };
-
-      # Import custom overlays
-      overlays = import ./overlays { inherit inputs; };
 
     in
     {
-      inherit overlays;
-
       packages = forAllSystems (
         system:
         let
@@ -103,76 +113,7 @@
       );
 
       nixosConfigurations = {
-        media = nixpkgs.lib.nixosSystem {
-          inherit specialArgs;
-          modules = [
-            { nixpkgs.hostPlatform = "x86_64-linux"; }
-            # Apply our overlays globally
-            {
-              nixpkgs.overlays = [
-                overlays.additions
-                overlays.modifications
-                overlays.unstable-packages
-              ];
-            }
-
-            # System settings (Locale, Timezone, Nix settings)
-            {
-              i18n.defaultLocale = lib.mkDefault cfg.locale;
-              time.timeZone = lib.mkDefault cfg.timezone;
-              nixpkgs.config.allowUnfree = true;
-              nix.settings = {
-                experimental-features = "nix-command flakes";
-                trusted-users = [
-                  "root"
-                  cfg.username
-                ];
-                substituters = [
-                  "https://cache.nixos.org"
-                  "https://law.cachix.org"
-                ];
-                trusted-public-keys = [
-                  "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-                  "law.cachix.org-1:ooSOR+DxWjRJehE4+q/j8rYecitsUolCYtXU/lKV/rA="
-                ];
-              };
-            }
-
-            # User account setup
-            {
-              users.users.${cfg.username} = {
-                name = cfg.username;
-                home = "/home/${cfg.username}";
-                description = cfg.fullname;
-              };
-            }
-
-            # Disko configuration
-            inputs.disko.nixosModules.disko
-
-            # Import host-specific NixOS configuration
-            ./hosts/media/configuration.nix
-
-            # Global/default modules
-            inputs.distro-grub-themes.nixosModules.x86_64-linux.default
-
-            # Home Manager configuration
-            inputs.home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                extraSpecialArgs = specialArgs;
-                users.${cfg.username} = import ./hosts/media/home-manager.nix {
-                  inherit cfg;
-                };
-                sharedModules = [ ./modules/home-manager ];
-              };
-            }
-
-            # Expose specialArgs so modules can parameterize
-            { config._module.args = specialArgs; }
-          ];
-        };
+        media = mkSystem "media" x86_64-config;
       };
     };
 }

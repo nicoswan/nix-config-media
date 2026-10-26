@@ -1,99 +1,143 @@
-SOPS_FILE := "../nix-secrets/secrets.yaml"
+# home-lab nix-config justfile
+# Provides recipes for building, testing, deploying, and managing NixOS configurations.
 
-# default recipe to display help information
+set shell := ["bash", "-uc"]
+
+SOPS_FILE := "../nix-secrets/hosts/media.yaml"
+DEFAULT_HOST := "media"
+DEFAULT_TARGET := "192.168.1.223"
+
+# Display available recipes and help information
 default:
-  @just --list
+    @just --list
 
-# Update nix-secrets from remote before rebuilding
+# ==============================================================================
+# Local Rebuild Recipes
+# ==============================================================================
+
+# Ensure flake files are tracked in git and secrets are synced
 rebuild-pre: update-nix-secrets
-  git add *.nix
+    git add -N . || true
 
-# Check sops after rebuild
+# Verify that sops-nix activated successfully in systemd journal
 rebuild-post:
-  just check-sops
+    scripts/check-sops.sh
 
-# Rebuild the system using the hostname as the target
-rebuild: rebuild-pre
-  scripts/system-flake-rebuild.sh
+# Rebuild and switch local system configuration (optionally specify HOST)
+rebuild HOST="": rebuild-pre
+    scripts/system-flake-rebuild.sh {{HOST}}
 
-# Rebuild with trace output
-rebuild-trace: rebuild-pre
-  scripts/system-flake-rebuild-trace.sh
+# Rebuild with full post-activation check (requires sops to be active)
+rebuild-full HOST="": rebuild-pre && rebuild-post
+    scripts/system-flake-rebuild.sh {{HOST}}
 
-# Update flake locks
-update:
-  nix flake update
+# Rebuild with detailed evaluation trace output
+rebuild-trace HOST="": rebuild-pre
+    scripts/system-flake-rebuild.sh {{HOST}} --show-trace
 
-# Update inputs and rebuild
-rebuild-update: update rebuild
+# Build and set as boot default without immediately switching
+rebuild-boot HOST="": rebuild-pre
+    HOST="${HOST:-$(hostname)}"; sudo nixos-rebuild boot --flake ".#${HOST}"
 
-# View diff of changed files
+# Build and activate configuration temporarily (no bootloader update)
+rebuild-test HOST="": rebuild-pre
+    HOST="${HOST:-$(hostname)}"; sudo nixos-rebuild test --flake ".#${HOST}"
+
+# Dry run build and activation
+rebuild-dry HOST="": rebuild-pre
+    HOST="${HOST:-$(hostname)}"; sudo nixos-rebuild dry-activate --flake ".#${HOST}"
+
+# Update flake inputs and rebuild
+rebuild-update HOST="": update
+    just rebuild {{HOST}}
+
+# ==============================================================================
+# Remote Deployment Recipes
+# ==============================================================================
+
+# Deploy configuration to remote target (defaults to media / 192.168.1.223)
+deploy HOST=DEFAULT_HOST TARGET=DEFAULT_TARGET: rebuild-pre
+    nixos-rebuild switch --target-host nicoswan@{{TARGET}} --flake .#{{HOST}} --sudo
+
+# Deploy with --show-trace for detailed error traces
+deploy-trace HOST=DEFAULT_HOST TARGET=DEFAULT_TARGET: rebuild-pre
+    nixos-rebuild switch --target-host nicoswan@{{TARGET}} --flake .#{{HOST}} --sudo --show-trace
+
+# Deploy and set as boot default without immediately switching
+deploy-boot HOST=DEFAULT_HOST TARGET=DEFAULT_TARGET: rebuild-pre
+    nixos-rebuild boot --target-host nicoswan@{{TARGET}} --flake .#{{HOST}} --sudo
+
+# Deploy and test without modifying the bootloader
+deploy-test HOST=DEFAULT_HOST TARGET=DEFAULT_TARGET: rebuild-pre
+    nixos-rebuild test --target-host nicoswan@{{TARGET}} --flake .#{{HOST}} --sudo
+
+# ==============================================================================
+# Flake & Secrets Maintenance
+# ==============================================================================
+
+# Update flake lockfile (optional: specify specific INPUT like nixpkgs)
+update INPUT="":
+    @if [ -n "{{INPUT}}" ]; then \
+        nix flake update {{INPUT}}; \
+    else \
+        nix flake update; \
+    fi
+
+# Pull latest secrets from nix-secrets repo and update flake input
+update-nix-secrets:
+    @if [ -d "../nix-secrets" ]; then \
+        (cd ../nix-secrets && git fetch && git rebase) || true; \
+    fi
+    nix flake update nix-secrets
+
+# Format all Nix files using nix fmt (nixpkgs-fmt)
+fmt:
+    nix fmt .
+
+# Show uncommitted git diff excluding flake.lock
 diff:
-  git diff ':!flake.lock'
+    git diff ':!flake.lock'
 
 # ── SOPS Secrets Management ───────────────────────────────────────────────────
 
 # Edit secrets file
-sops:
-  echo "Editing {{SOPS_FILE}}"
-  nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops {{SOPS_FILE}}"
+sops FILE=SOPS_FILE:
+    @if [ -f "{{FILE}}" ]; then \
+        echo "Editing {{FILE}}"; \
+        nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops {{FILE}}"; \
+    elif [ -f "../nix-secrets/{{FILE}}" ]; then \
+        echo "Editing ../nix-secrets/{{FILE}}"; \
+        nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops ../nix-secrets/{{FILE}}"; \
+    else \
+        echo "Secrets file {{FILE}} not found"; \
+    fi
 
-# Print secrets file
-sops-print:
-  echo "Editing {{SOPS_FILE}}"
-  nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops -d{{SOPS_FILE}}"  
+# Print decrypted secrets file
+sops-print FILE=SOPS_FILE:
+    @if [ -f "{{FILE}}" ]; then \
+        nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops -d {{FILE}}"; \
+    elif [ -f "../nix-secrets/{{FILE}}" ]; then \
+        nix-shell -p sops --run "SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt sops -d ../nix-secrets/{{FILE}}"; \
+    else \
+        echo "Secrets file {{FILE}} not found"; \
+    fi
 
-# Generate a new age key
-age-key:
-  nix-shell -p age --run "age-keygen"
-
-# Rekey all secrets (run after adding a new host/user key)
-rekey:
-  cd ../nix-secrets && (\
-    sops updatekeys -y secrets.yaml && \
-    (pre-commit run --all-files || true) && \
-    git add -u && (git commit -m "chore: rekey" || true) && git push \
-  )
+# Rekey secrets
+rekey FILE=SOPS_FILE:
+    cd ../nix-secrets && (\
+        sops updatekeys -y {{FILE}} && \
+        git add -u && (git commit -m "chore: rekey" || true) && git push \
+    )
 
 # Verify sops secrets are accessible
 check-sops:
-  scripts/check-sops.sh
+    scripts/check-sops.sh
 
-# Pull latest secrets
-update-nix-secrets:
-  (cd ../nix-secrets && git fetch && git rebase) || true
-  nix flake update nix-secrets
-
-# ── Maintenance ───────────────────────────────────────────────────────────────
-
-# Collect garbage
-nixgc:
-  nix-collect-garbage -d
-
-# Deep clean NixOS store and channels
-nixos-clean:
-  nix-channel --update 
-  nix-env -u --always 
-  sudo rm -rf /nix/var/nix/gcroots/auto/* 
-  sudo nix-collect-garbage -d 
-
-# Rebuild media server remotely via nixos-rebuild
-rebuild-media-remote: rebuild-pre
-  nixos-rebuild switch --target-host nicoswan@192.168.1.223 --flake .#media --sudo --ask-sudo-password
-
-# Rebuild media server remotely via nixos-installer
-rebuild-media: rebuild-pre
-  nixos-installer rebuild -v \
-      --host 192.168.1.223 \
-      --user nicoswan \
-      --flake-path /home/nicoswan/development/home-lab/nix-config-media \
-      --flake-host media \
-      --action switch \
-      --yes
+# ── Disko & Hardware Installation ─────────────────────────────────────────────
 
 disko-install HOST DISK:
-  sudo nix run .#disko-install -- \
-    --flake .#{{HOST}} --disk main {{DISK}}
+    sudo nix run .#disko-install -- \
+        --flake .#{{HOST}} --disk main {{DISK}}
 
-install-mmcblk0: 
-  just disko-install media /dev/mmcblk0
+install-mmcblk0:
+    just disko-install media /dev/mmcblk0

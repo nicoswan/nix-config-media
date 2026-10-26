@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   imports = [
     # Core configuration
-    ../../base/nixos
+    ../../core/nixos
     ./sops.nix
 
     ./system

@@ -1,7 +1,6 @@
-{
-  pkgs,
-  cfg,
-  ...
+{ pkgs
+, cfg
+, ...
 }:
 {
   # Create a loopback filesystem image on the NTFS drive to support native POSIX permissions for PostgreSQL
